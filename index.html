@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相場の航海図 - Celestial Market Navigation -</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&family=Zen+Old+Mincho:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark-gold: #B8860B;
+            --light-gold: #F7E7CE;
+            --charcoal: #2C2C2C;
+            --dark-charcoal: #1A1A1A;
+            --cream: #FEFCF3;
+            --warm-white: #FAFAFA;
+            --text-dark: #333333;
+            --text-light: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--cream) 0%, var(--warm-white) 100%);
+            overflow-x: hidden;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--dark-charcoal) 0%, var(--charcoal) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('imgs/Firefly_571536.jpg') center/cover;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Zen Old Mincho', serif;
+            font-size: 8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--gold);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .english-title {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--charcoal);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--dark-gold));
+        }
+
+        .content-block {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+
+        .content-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark-gold);
+        }
+
+        .content-block p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, var(--light-gold) 0%, var(--light-gold) 100%);
+            padding: 3px 8px;
+            font-weight: 600;
+            border-radius: 3px;
+        }
+
+        .strong-text {
+            color: var(--dark-gold);
+            font-weight: 600;
+        }
+
+        .quote-section {
+            background: var(--charcoal);
+            color: white;
+            padding: 80px 0;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('imgs/national-historical-museum-of-sweden-nhm-kfHtmYrr_bM-unsplash.jpg') center/cover;
+            opacity: 0.1;
+        }
+
+        .quote-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--light-gold);
+        }
+
+        .image-section {
+            margin: 80px 0;
+            text-align: center;
+        }
+
+        .image-section img {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin: 80px 0;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .before-item {
+            background: linear-gradient(135deg, #f8f8f8, #e8e8e8);
+            border: 2px solid #ddd;
+        }
+
+        .after-item {
+            background: linear-gradient(135deg, var(--light-gold), var(--cream));
+            border: 2px solid var(--gold);
+        }
+
+        .comparison-item h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .before-item h4 {
+            color: #666;
+        }
+
+        .after-item h4 {
+            color: var(--dark-gold);
+        }
+
+        .qa-section {
+            background: var(--warm-white);
+            padding: 80px 0;
+            margin: 80px 0;
+        }
+
+        .qa-item {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--gold);
+        }
+
+        .qa-item h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--dark-gold);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--dark-charcoal) 0%, var(--charcoal) 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1600') center/cover;
+            opacity: 0.2;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--gold);
+        }
+
+        .cta-text {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--gold), var(--dark-gold));
+            color: var(--dark-charcoal);
+            padding: 20px 60px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.6);
+            background: linear-gradient(45deg, var(--dark-gold), var(--gold));
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 4.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+
+            .english-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>相場の航海図</h1>
+            <p class="hero-subtitle">
+                <span class="english-title">- Celestial Market Navigation -</span><br>偽りの水平線を捨て、<br>星々が示す真の航路をその手に。<br>99%のトレーダーが知らない"天体の法則"を読み解き、<br>常識という名の呪いを断ち切る。
+            </p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- 序章：二重の絶望 -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">序章：二重の絶望</h2>
+            
+            <div class="image-section">
+                <img src="imgs/zoltan-tasi-VZDNhQy6pRY-unsplash.jpg" alt="嵐の海">
+            </div>
+
+            <div class="content-block">
+                <h3>空白だらけの海図を握りしめて</h3>
+                <p>GPSなど存在しない、遥か昔の時代の話。</p>
+                </p>羅針盤と、不完全な天体観測、そして一枚の海図だけを頼りに、富を求めて大海原へと乗り出す者たちがいました。</p>
+                
+                <p>彼らが使っていた海図は、代々受け継がれてきた、誰もが正しいと信じているものでした。それは、<span class="highlight">沿岸を航海するには、十分に信頼できる海図</span>でした。港や島の位置、沿岸の海流などが、経験豊富な船乗りたちの手によって、詳細に描き込まれていたのです。</p>
+                
+                <p>しかし、その海図は、ひとたび未知の大洋へ乗り出すには、<span class="strong-text">致命的な欠陥</span>を抱えていました。遥か沖合に出た途端、海図は広大な<span class="strong-text">「空白」</span>だらけ。そこに描かれているのは、確かな測量に基づかない、経験則と推測に満ちた、不確かな航路だけでした。</p>
+                
+                <p>そして、そこに<span class="strong-text">"嵐"</span>がやってきます。ただでさえ間違った海図を握りしめているのに、天候を読む術さえ知らない。</p>
+                
+                <p>その船の行く末がどうなるか、想像に難くないでしょう。</p>
+                
+                <p>…さて、現代の、あなたの話です。あなたが使っている「常識という名の海図」は、この沿岸用の古い海図と、一体何が違うというのでしょうか？</p>
+            </div>
+
+            <div class="content-block">
+                <h3>一冊の航海日誌より、最後のページ</h3>
+                <p>これは、かつての私自身の、再起不能になるほどの損失を出した日の、血と涙で濡れた航海日誌（トレード記録）です。この記憶を掘り起こすのは、今でも胸が張り裂けそうになりますが、あなたの痛みに寄り添うために、全てを正直に告白します。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 航海日誌の引用セクション -->
+    <section class="quote-section">
+        <div class="quote-content">
+            <p class="quote-text">「私が握りしめていた海図（＝水平線を使ったチャート分析）は、完璧だった。教科書で「聖杯」と謳われる美しいチャートパターン。複数の時間足で引いた水平のレジスタンスラインを、ローソク足が力強くブレイクした。全ての浮標（インジケーター）は、まるで合唱するように「進め」と高らかに歌っていた。これ以上ないほどの追い風。疑う余地など、どこにもなかった。」</p>
+            
+            <p class="quote-text">「しかし、全ては幻想だったのだ。私が「完璧な航路」だと信じていたチャートパターンは、特定の状況下でしか機能しない、沿岸用の海図にすぎなかった。市場という広大な大洋では、もっと巨大で、抗いようのない力が働いていた。」</p>
+            
+            <p class="quote-text">「なぜだ？なぜ、海図はセオリー通りだったのに、船は沈むのか？その答えは、絶望の淵でようやく理解した。私が信じていた「海図」そのものが、この大洋を渡るためには、あまりにも不完全で、役に立たない代物だったのだ。」</p>
+        </div>
+    </section>
+
+    <!-- 第二章：雲の切れ間の真実 -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">第二章：雲の切れ間の真実</h2>
+            
+            <div class="image-section">
+                <img src="imgs/national-historical-museum-of-sweden-nhm-kfHtmYrr_bM-unsplash.jpg" alt="古い航海図と羅針盤">
+            </div>
+
+            <div class="content-block">
+                <h3>"幻想"の地図を燃やし、天を詠め</h3>
+                <p>なぜ、あなたの航海はこれほどまでに不安定で、苦しいものなのでしょうか？答えは、あなたが「沿岸用の古い海図」で、「未知の大洋」に乗り出そうとしているからです。</p>
+                
+                <p>歴史上、コロンブスやマゼランといった偉大な航海士たちは、決して手元の海図だけを信じてはいませんでした。彼らは、まず一つの<span class="strong-text">「勇気」</span>を持っていました。それは、誰もが正しいと信じてきた、代々伝わる権威ある海図そのものに、静かに「No」を突きつける勇気です。</p>
+                
+                <p><span class="highlight">あなたには、その勇気がありますか？</span></p>
+                
+                <p>彼らは、悠久の昔から、寸分の狂いもなく正確に運行を続ける<span class="strong-text">"星々"</span>に目を向けました。全ての波、全ての嵐、全ての潮の流れでさえも、その根源にある、たった一つの巨大な引力──<span class="strong-text">天体の運行法則</span>──によって、抗いようもなく支配されているという、宇宙の真理を知っていたのです。</p>
+            </div>
+
+            <div class="content-block">
+                <h3>禁断の"天測航海図"</h3>
+                <p>今、あなたにお渡ししようとしているのは、目先の波を読む小手先の"操船術"ではありません。それは、市場という大海原そのものを支配する、天体の運行法則を読み解き、<span class="highlight">誰にでも正確な航海を可能にする、禁断の"天測航海図"</span>です。</p>
+                
+                <p>これは、私が<span class="strong-text">15年以上、来る日も来る日もチャートに向き合い、文字通り何万本というラインを引き、その一本一本を血の滲むような思いで検証し、幾多の失敗と試行錯誤の果てに、ようやく体系化した揺るぎない「結論」</span>そのものです。</p>
+                
+                <p>この航海図が示す"星々"は、あなたが今いるFXという大海原だけでなく、株式市場、あるいは先物市場といった、全く別の海をも、分け隔てなく照らします。なぜなら、これは特定の波の動きを読むための小手先の操船術ではなく、あらゆる金融チャートの根底に流れる<span class="highlight">"チャート分析の真理"</span>そのものを読み解く、普遍的な叡智だからです。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第三章：星を詠む者が見る世界 -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">第三章：星を詠む者が見る世界</h2>
+            
+            <div class="image-section">
+                <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800" alt="星空">
+            </div>
+
+            <div class="content-block">
+                <h3>トレードから"天体観測"へ</h3>
+                <p>この"天測航海図"を手にした瞬間から、あなたのトレード、いや、あなたの人生は、全く新しい次元へと静かに移行します。</p>
+                
+                <p>もはや、あなたの耳に、アナリストたちの喧しい声や、市場のノイズは届きません。代わりに聞こえるようになるのは、星々が奏でる、静かで荘厳な<span class="highlight">"宇宙の調和"</span>。あなただけの静寂です。</p>
+                
+                <p>あなたは、今までノイズの塊にしか見えなかったチャートの中に、突如として、息をのむほどに<span class="strong-text">美しい星座の連なり</span>を発見するでしょう。そして、その星座が次にどこへ移動するのかを、まるで熟練の天文学者のように、静かに、そして寸分の狂いもなく正確に予測できるようになるのです。</p>
+                
+                <p>恐怖は、<span class="highlight">スリリングな期待</span>へ。リスクは、<span class="highlight">計算された最大のリターン</span>へ。チャートが大きく動く時こそ、あなたの資産が最も大きく飛躍する瞬間となるのです。</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-item before-item">
+                    <h4>【Before】幻想の海図を信じる航海</h4>
+                    <p>「世界は平らだ」という嘘の地図。これでは、何度出航しても遭難するだけだ。</p>
+                </div>
+                <div class="comparison-item after-item">
+                    <h4>【After】星を詠み、未来を識る航海</h4>
+                    <p>たった数本の線を引くだけで、未来の航路が、まるで夜空の星座のように浮かび上がる。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Q&A Section -->
+    <section class="qa-section">
+        <div class="container">
+            <h2 class="section-title">あなたの船出に際して</h2>
+            
+            <div class="qa-item">
+                <h4>Q1. 本当に、私にも"星座"は描けるのでしょうか？</h4>
+                <p>A1. 断言します、描けます。なぜなら、これは才能やセンスの領域ではないからです。むしろ、あなたが今まで良しとされてきた複雑な手法や、無数のインジケーターによって曇らされてしまった<span class="highlight">「物事をありのままに見る目」</span>を取り戻すための技術です。</p>
+            </div>
+            
+            <div class="qa-item">
+                <h4>Q2. チャートに張り付く時間は、本当に減るのでしょうか？</h4>
+                <p>A2. 減ります。なぜなら、この航海術は「次にどの波が来るか」を当てるための短期的な予測ではないからです。これは、<span class="highlight">カオスに満ちた海面を見つめるのではなく、その海全体を支配する、巨大な引力の源である『天体の軌道』そのものを捉える</span>ような、視点の転換だからです。</p>
+            </div>
+            
+            <div class="qa-item">
+                <h4>Q3. これは、聖杯（必ず勝てる手法）なのですか？</h4>
+                <p>A3. いいえ、違います。この"天測航海図"は、あなたに百発百中の勝利を約束する魔法の道具ではありません。それは、<span class="highlight">あなたのトレードという航海における、"勝率"と"損益率"の概念そのものを、根底から覆す「羅針盤」</span>です。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">最後の選択</h2>
+            <p class="cta-text">このままページを閉じ、再び先の見えない嵐の海へ戻るのも、あなたの自由です。<br><br>しかし、もしあなたの魂の奥底で、かすかでも、星々の静かな呼び声が聞こえるのなら…。<br>もし、あなたが「本物の知性」を渇望し、誰かの受け売りではない、自分自身の力で未来を切り拓く覚悟があるのなら…。<br><br>その選択をする時は、今、この瞬間しかありません。</p>
+            <a href="#purchase" class="cta-button">"天測航海図"を授かる</a>
+        </div>
+    </section>
+</body>
+</html> 
